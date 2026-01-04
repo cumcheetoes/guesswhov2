@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PeerJS Verify</title>
+    <script src="https://unpkg.com/peerjs@1.5.0/dist/peerjs.min.js"></script>
+    <style>
+        body {
+            background: #111;
+            color: #fff;
+            font-family: sans-serif;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>PeerJS Diagnostic</h1>
+    <div id="status">Initializing...</div>
+    <div id="log"></div>
+    <script>
+        const log = (msg) => {
+            const div = document.createElement('div');
+            div.innerText = `> ${msg}`;
+            document.getElementById('log').appendChild(div);
+            console.log(msg);
+        };
+
+        window.onload = () => {
+            if (typeof Peer === 'undefined') {
+                log("CRITICAL: PeerJS library NOT loaded.");
+                return;
+            }
+            log("PeerJS Library Loaded.");
+
+            try {
+                const id = "TEST_" + Math.random().toString(36).substring(7);
+                log("Attempting to create peer with ID: " + id);
+                const peer = new Peer(id, { debug: 2 });
+
+                peer.on('open', (id) => {
+                    log("SUCCESS: Peer Opened! ID: " + id);
+                    document.getElementById('status').innerText = "SUCCESS";
+                    document.getElementById('status').style.color = "#0f0";
+                    setTimeout(() => peer.destroy(), 1000);
+                });
+
+                peer.on('error', (err) => {
+                    log("ERROR: " + err.type + " - " + err);
+                    document.getElementById('status').innerText = "FAILED: " + err.type;
+                    document.getElementById('status').style.color = "#f00";
+                });
+
+                setTimeout(() => {
+                    if (document.getElementById('status').innerText === "Initializing...") {
+                        log("TIMEOUT: No response after 5s.");
+                        document.getElementById('status').innerText = "TIMEOUT";
+                    }
+                }, 5000);
+
+            } catch (e) {
+                log("EXCEPTION: " + e);
+            }
+        };
+    </script>
+</body>
+
+</html>

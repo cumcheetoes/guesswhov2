@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Guess Who by Afnan</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- PeerJS -->
+    <script src="https://unpkg.com/peerjs@1.5.0/dist/peerjs.min.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-left">
+                <div class="social-links">
+                    <a href="https://www.instagram.com/cumcheetoes/" target="_blank" class="social-icon"
+                        aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/cumcheetoes" target="_blank" class="social-icon" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                            </path>
+                        </svg>
+                    </a>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=afnanidkk@gmail.com" target="_blank"
+                        class="social-icon" aria-label="Email">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="logo" onclick="location.reload()">Guess Who <span class="highlight">by Afnan</span></div>
+
+
+        </header>
+
+        <!-- SCREENS -->
+        <main id="main-content">
+
+            <!-- 1. HOME SCREEN -->
+            <section id="screen-home" class="screen active">
+                <div class="hero">
+                    <h1>Who is the <span class="highlight">Imposter</span>?</h1>
+                    <p>Blend in. Don't get caught.</p>
+                </div>
+                <div class="mode-selection">
+                    <div class="mode-card" onclick="app.navTo('screen-setup-local')">
+                        <div class="mode-icon">👥</div>
+                        <h3>Pass & Play</h3>
+                        <p>Local multiplayer (IRL)</p>
+                    </div>
+                    <div class="mode-card" onclick="app.navTo('screen-online-menu')">
+                        <div class="mode-icon">🌐</div>
+                        <h3>Online Mode</h3>
+                        <p>Play remotely via internet</p>
+                    </div>
+                </div>
+
+                <div class="info-sections">
+                    <div class="info-card">
+                        <h4>ℹ️ About the Game</h4>
+                        <p>A social deduction game where everyone knows the secret word... except the Imposter. Can you
+                            find them before they figure it out?</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>✨ New Features</h4>
+                        <p>• <b>Online Mode</b>: Play with friends anywhere!<br>• <b>Premium UI</b>: Making it look
+                            slick.<br>• <b>New Categories</b>: Updated based on popular demand.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>📝 Patch Notes v2.0</h4>
+                        <p>• Added "Waiting for Players" sync.<br>• Fixed card-flip peeking bug.<br>• Removed server
+                            dependency (P2P).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. SETUP SCREEN (LOCAL) -->
+            <section id="screen-setup-local" class="screen hidden">
+                <h2>Local Game Setup</h2>
+
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="local-category-select">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+
+                <div class="player-list-container">
+                    <label>Players</label>
+                    <div id="local-player-list">
+                        <!-- Player inputs go here -->
+                        <div class="player-input-row">
+                            <input type="text" placeholder="Player 1 Name" class="player-name-input" value="Player 1">
+                        </div>
+                        <div class="player-input-row">
+                            <input type="text" placeholder="Player 2 Name" class="player-name-input" value="Player 2">
+                        </div>
+                        <div class="player-input-row">
+                            <input type="text" placeholder="Player 3 Name" class="player-name-input" value="Player 3">
+                        </div>
+                    </div>
+                    <button class="btn btn-small" onclick="localGame.addPlayerInput()">+ Add Player</button>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="localGame.startGame()">Start Game</button>
+                    <button class="btn btn-text" onclick="app.navTo('screen-home')">Back</button>
+                </div>
+            </section>
+
+            <!-- 3. PASS & PLAY REVEAL FLOW -->
+            <section id="screen-pass-reveal" class="screen hidden">
+                <div class="instruction-card">
+                    <h3 id="pp-player-name">Player Name</h3>
+                    <p id="pp-next-player-name">...</p>
+
+                    <div class="card-container" id="pp-card" onclick="localGame.revealRole()">
+                        <div class="card-face card-front">
+                            <span>Tap to Reveal Role</span>
+                        </div>
+                        <div class="card-face card-back">
+                            <div id="pp-role-content">
+                                <!-- "Secret Word: Apple" or "YOU ARE THE IMPOSTER" -->
+                            </div>
+                            <button class="btn btn-small btn-hide" onclick="localGame.hideRole(event)">Hide and
+                                Pass</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. ONLINE MENU -->
+            <!-- 4. ONLINE MENU -->
+            <section id="screen-online-menu" class="screen hidden">
+                <h2 style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                    <span class="online-hero-icon">🚀</span> Online Mode
+                </h2>
+
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>Your Name</label>
+                    <input type="text" id="online-player-name" placeholder="Enter Name..." maxlength="12">
+                </div>
+
+                <div id="menu-host-card" class="menu-card">
+                    <h3>Host Game</h3>
+                    <button class="btn btn-primary" onclick="onlineGame.initHost()">Create Room</button>
+                </div>
+
+                <div id="menu-divider" class="divider">OR</div>
+
+                <div id="menu-join-card" class="menu-card">
+                    <h3>Join Game</h3>
+                    <input type="text" id="join-room-code" placeholder="Room Code" maxlength="5"
+                        style="text-transform:uppercase;">
+                    <button class="btn btn-secondary" onclick="onlineGame.joinGame()">Join Room</button>
+                </div>
+
+                <button class="btn btn-text" onclick="app.navTo('screen-home')" style="margin-top: 20px;">Back to
+                    Menu</button>
+            </section>
+
+            <!-- 5. ONLINE LOBBY -->
+            <section id="screen-online-lobby" class="screen hidden">
+                <div class="lobby-header">
+                    <h3>Lobby</h3>
+                    <div class="room-code-display">
+                        Code: <span id="lobby-room-code" class="code">...</span>
+                        <button class="btn btn-small" onclick="onlineGame.copyLink()"
+                            style="margin-left:10px; padding: 5px 10px;">Copy Link</button>
+                    </div>
+                </div>
+
+                <div class="player-grid" id="lobby-player-list">
+                    <!-- Players appear here -->
+                </div>
+
+                <!-- Host Only Controls -->
+                <div id="host-controls" class="hidden">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <div id="online-category-grid" class="category-grid">
+                            <!-- Populated by JS -->
+                        </div>
+                        <input type="hidden" id="online-category-select" value="Brands">
+                    </div>
+                    <button class="btn btn-primary" onclick="onlineGame.startOnlineGame()">Start Game</button>
+                </div>
+
+                <div id="client-waiting-msg" class="hidden">
+                    <p>Waiting for host to start...</p>
+                </div>
+
+                <button class="btn btn-text" onclick="app.navTo('screen-home')">Leave</button>
+            </section>
+
+            <!-- GENERIC GAME SCREEN (For Reveal & Gameplay) -->
+            <!-- Note: Complex Online UI will go here later -->
+
+            <!-- 7. ONLINE: ROLE REVEAL -->
+            <section id="screen-online-reveal" class="screen hidden">
+                <div class="hero">
+                    <h2>Role Assigned</h2>
+                    <p>Tap card to see who you are.</p>
+                </div>
+
+                <div class="card-container" id="online-role-card" onclick="onlineGame.revealRole()">
+                    <div class="card-face card-front">
+                        <span>Tap to Reveal</span>
+                    </div>
+                    <div class="card-face card-back">
+                        <div id="online-role-content"></div>
+                        <button id="btn-ready" class="btn btn-small btn-hide"
+                            onclick="onlineGame.playerReady(event)">I'm Ready</button>
+                        <p id="local-waiting-msg" class="text-muted hidden" style="margin-top: 10px;">Waiting for
+                            others...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8 & 9. ONLINE GAME BOARD (Clues & Input) -->
+            <section id="screen-online-board" class="screen hidden">
+                <div class="hero">
+                    <h1 id="round-indicator" class="highlight">Round 1</h1>
+                    <h2>Game Started</h2>
+                    <p id="board-status-msg">Waiting...</p>
+                    <p id="typing-indicator" class="text-muted hidden"
+                        style="height: 20px; font-style: italic; color: var(--accent);">
+                        ...
+                    </p>
+                </div>
+
+                <div id="clue-list" class="clue-list">
+                    <!-- Clues appear here live -->
+                </div>
+
+                <!-- Input Area (Only visible when it's your turn) -->
+                <!-- Input Area (Only visible when it's your turn) -->
+                <div id="online-turn-input" class="turn-input-container hidden">
+                    <div id="my-turn-avatar" class="clue-avatar">ME</div>
+                    <div class="turn-input-wrapper">
+                        <label>Your Turn!</label>
+                        <input type="text" id="clue-input" placeholder="Enter your clue..." maxlength="30">
+                    </div>
+                    <button class="btn btn-primary btn-submit-clue" onclick="onlineGame.submitClue()">Submit</button>
+                </div>
+
+                <div id="host-board-controls" class="hidden" style="margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="onlineGame.startDecisionPhase()"
+                        style="width: 100%; padding: 15px; font-size: 1.2rem;">Continue to Decision</button>
+                </div>
+            </section>
+
+            <!-- 9.5 ONLINE: ROUND DECISION (New) -->
+            <section id="screen-round-decision" class="screen hidden">
+                <div class="hero">
+                    <h2>Round Complete</h2>
+                    <p>What do you want to do next?</p>
+                </div>
+
+                <div class="mode-selection" style="margin-top: 30px;">
+                    <div class="mode-card" onclick="onlineGame.submitDecision('AGAIN')" id="btn-decide-again">
+                        <div class="mode-icon">📝</div>
+                        <h3>Another Round</h3>
+                        <p>Give more clues</p>
+                        <div class="voter-avatars" id="voters-again"></div>
+                    </div>
+                    <div class="mode-card" onclick="onlineGame.submitDecision('VOTE')" id="btn-decide-vote">
+                        <div class="mode-icon">🕵️</div>
+                        <h3>Vote Now</h3>
+                        <p>Find the Imposter</p>
+                        <div class="voter-avatars" id="voters-vote"></div>
+                    </div>
+                </div>
+
+                <p id="decision-status" class="text-muted" style="text-align: center; margin-top: 20px;">Waiting
+                    for
+                    players...</p>
+            </section>
+
+            <!-- 10. ONLINE: VOTING -->
+            <section id="screen-online-voting" class="screen hidden">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 20px;">
+                    <h2>Vote the Imposter</h2>
+                    <div id="voting-timer"
+                        style="font-size: 1.5rem; color: var(--warning); font-weight: bold; padding: 10px 20px; background: rgba(0,0,0,0.3); border-radius: 12px; border: 1px solid var(--glass-border);">
+                        70s</div>
+                </div>
+                <div id="vote-grid" class="vote-grid">
+                    <!-- Vote buttons -->
+                </div>
+                <p class="text-muted" style="text-align: center;">Wait for everyone to vote...</p>
+            </section>
+
+            <!-- 11. ONLINE: RESULT -->
+            <!-- 11. ONLINE: RESULT -->
+            <section id="screen-online-result" class="screen hidden">
+                <div class="result-card glass-panel">
+                    <div id="result-avatar-container">
+                        <!-- Large Avatar Injected Here -->
+                    </div>
+                    <div class="result-content">
+                        <h2 id="result-header">Result</h2>
+                        <p id="result-msg">...</p>
+                        <div class="secret-word-reveal">
+                            <span class="label">The Secret Word</span>
+                            <h1 id="result-word">...</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons" style="margin-top: 30px;">
+                    <button class="btn btn-primary" id="btn-play-again" onclick="onlineGame.nextRound()">Play
+                        Again</button>
+                    <button class="btn btn-text" onclick="app.navTo('screen-home')">Back to Menu</button>
+                    <!-- Host controls are now handled via visibility of btn-play-again or similar logic in JS -->
+                    <div id="host-result-controls" class="hidden"></div>
+                    <!-- Keeping id for compatibility but logic might shift to just showing play again if host -->
+                </div>
+            </section>
+
+            <section id="screen-local-game" class="screen hidden">
+                <div class="hero">
+                    <h2>Game is Live!</h2>
+                    <p>Discuss and find the imposter.</p>
+                </div>
+
+                <div class="card-container" id="reveal-card">
+                    <div class="card-face card-front"
+                        style="background: linear-gradient(135deg, #ef4444, #f43f5e); color: white; border: none;">
+                        <span>Reveal Imposter</span>
+                    </div>
+                    <div class="card-face card-back"
+                        style="background: var(--bg-card); color: var(--text-main); border: 2px solid var(--primary);">
+                        <div id="local-end-result">
+                            <!-- Populated via JS -->
+                        </div>
+                        <button class="btn btn-primary btn-small" style="margin-top: 15px;"
+                            onclick="localGame.startGame()">Play Again</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-text" onclick="app.navTo('screen-home')">Menu</button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
