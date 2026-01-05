@@ -107,14 +107,15 @@ header .icon-btn {
     header {
         padding: 10px 15px;
         /* Reduced padding */
+        position: absolute;
+        /* Scrolls with page */
     }
 
     .app-container {
         padding-top: 100px;
         /* Reduced top spacing */
-        height: 100vh;
-        overflow-y: hidden;
-        /* Prevent body scroll */
+        height: auto;
+        overflow-y: auto;
     }
 
     .logo {
