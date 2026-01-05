@@ -458,6 +458,14 @@ option {
     margin-bottom: 20px;
 }
 
+.hero .tagline {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 500px;
+    margin: 0 auto 30px;
+}
+
 /* Screen Specifics */
 #screen-home {
     justify-content: center;

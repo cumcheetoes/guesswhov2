@@ -1,0 +1,20 @@
+{
+  "name": "Imposter Who - Social Deduction Game",
+  "short_name": "Imposter Who",
+  "description": "Play Imposter Who - An online social deduction game where players try to find the imposter among them. Free multiplayer word guessing game.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f1e",
+  "theme_color": "#8B5CF6",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🕵️</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment"],
+  "screenshots": []
+}
