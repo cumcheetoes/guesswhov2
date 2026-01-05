@@ -365,11 +365,13 @@ const onlineGame = {
             if (!isRetry) onlineGame.retryCount = 0; // Only reset on fresh start
             onlineGame.peer = new Peer(code, {
                 debug: 1,
-                debug: 1,
                 config: {
                     iceServers: [
                         { urls: 'stun:stun.l.google.com:19302' },
-                        { urls: 'stun:stun1.l.google.com:19302' }
+                        { urls: 'stun:stun1.l.google.com:19302' },
+                        { urls: 'stun:stun2.l.google.com:19302' },
+                        { urls: 'stun:stun3.l.google.com:19302' },
+                        { urls: 'stun:stun4.l.google.com:19302' }
                     ]
                 }
             });
@@ -662,20 +664,33 @@ const onlineGame = {
         document.getElementById('client-waiting-msg').innerText = "Connecting to room...";
 
         onlineGame.players = [];
-        onlineGame.peer = new Peer();
+
+        // Initialize Peer with proper ICE server configuration for better cross-network connectivity
+        onlineGame.peer = new Peer({
+            debug: 1,
+            config: {
+                iceServers: [
+                    { urls: 'stun:stun.l.google.com:19302' },
+                    { urls: 'stun:stun1.l.google.com:19302' },
+                    { urls: 'stun:stun2.l.google.com:19302' },
+                    { urls: 'stun:stun3.l.google.com:19302' },
+                    { urls: 'stun:stun4.l.google.com:19302' }
+                ]
+            }
+        });
 
         onlineGame.peer.on('open', (id) => {
             onlineGame.myId = id;
             onlineGame.conn = onlineGame.peer.connect(code);
 
-            // Connection Timeout Logic
+            // Connection Timeout Logic - increased to 10 seconds for better cross-network compatibility
             const connTimeout = setTimeout(() => {
                 if (!onlineGame.conn || !onlineGame.conn.open) {
                     alert("Room not found or host is offline.");
                     app.navTo('screen-online-menu');
                     if (onlineGame.peer) onlineGame.peer.destroy();
                 }
-            }, 5000);
+            }, 10000);
 
             // Handle errors on the PEER object (connection failure)
             // Handle errors on the PEER object (connection failure)
